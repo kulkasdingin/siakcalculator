@@ -1,0 +1,86 @@
+<html>
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+        
+    </head>
+    <body class="bg-dark text-center">
+        <div class="container mx-auto">
+            <div class="row gap-4">
+                <div class="col-md-6 offset-md-3 pt-5">
+                    <input id="input-nilai" type="text" class="form-control">
+                </div>
+                <div class="col-md-6 offset-md-3">
+                    <button id="btn-calculate" class="btn btn-primary">Calculate</button>
+                </div>
+                <div class="col-md-4 offset-md-4">
+                    <table class="table text-white">
+                        <thead>
+                            <tr>
+                                <th scope="col">Komponen</th>
+                                <th scope="col">Bobot</th>
+                                <th scope="col">Nilai</th>
+                                <th scope="col">Konversi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="data-row">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+        <script>
+            $('#btn-calculate').on('click', function(){
+                let nilai = $('#input-nilai').val();
+                let nilai_splitted = nilai.split("	");
+                console.log(nilai_splitted);
+                let clear_nilai_splitted = [];
+                let temp = [];
+                nilai_splitted.forEach(function(item,index){
+                    if(index == 0) temp.push(item); // Push langsung element pertama 
+                    else if(index%2==0) { // Clean data setiap perulangan elemen kedua berikutnya karena nilai sama komponen nempel
+                        let temp2 = item.split(' '); // Split nilai sama komponen berikutnya
+                        temp.push(temp2[0]); // Masukin hasil splitnya
+                        clear_nilai_splitted.push(temp); // Karena udah lengkap komponen bobot nilai langsung push ke array inti
+                        temp = []; // clean temp
+                        temp.push(temp2[1]); // Push ulang
+                    }
+                    else temp.push(item); // ini ngepush bobot
+                });
+                console.log(clear_nilai_splitted);
+
+                let final_nilai = [];
+                clear_nilai_splitted.forEach(function(item,index){
+                    item.push((parseFloat(item[1])*parseFloat(item[2]))/100);
+                    final_nilai.push(item);
+                });
+                console.log(final_nilai);
+                
+                let total_nilai = 0;
+                final_nilai.forEach(function(item){
+                    total_nilai+=item[3];
+                });
+
+                console.log("nilai akhir: "+ total_nilai)
+                let table = "";
+                final_nilai.forEach(function(item,index){
+                    table+=
+                        "<tr>\
+                            <td>"+item[0]+"</td>\
+                            <td>"+item[1]+"</td>\
+                            <td>"+item[2]+"</td>\
+                            <td>"+item[3]+"</td>\
+                        <tr>"
+                });
+                table+=
+                    "<tr>\
+                        <td colspan=3 class='text-end'>Total Nilai</td>\
+                        <td>"+total_nilai+"</td>\
+                    <tr>"
+                $('#data-row').html(table);
+            })
+        </script>
+    </body> 
+</html>
