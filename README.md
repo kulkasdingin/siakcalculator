@@ -5,3 +5,5 @@ Sometimes you need to calculate your own partially final score on a course to kn
 Instead of calculating it one by one via calculator, just copy and paste your score to this siakcalculator and voila you get your final score.
 
 Disclaimer: Don't worry, the magic happens on your side. No data is sent before/during/after the calculation
+
+Demo: https://frz.codes/siakcalculator.html
